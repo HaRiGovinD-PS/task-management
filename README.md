@@ -1,59 +1,164 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Task Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A task management application built with **Laravel 12**, **React**, **MySQL**, and **JWT authentication**. The React frontend communicates with Laravel through a REST API.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- User registration, login, and logout
+- JWT-based API authentication
+- Role-based access for `admin` and `user`
+- Create, view, update, and delete tasks
+- Admins can view all tasks and assign tasks to themselves or other users
+- Regular users can manage only their own tasks
+- Search by task title, status filtering, and pagination
+- Server-side validation and authorization
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Technology Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Backend: PHP 8.2+, Laravel 12
+- Authentication: `php-open-source-saver/jwt-auth`
+- Database: MySQL
+- Frontend: React, Vite, Bootstrap 5
+- HTTP client: Axios
+- Icons: Lucide React
 
-## Learning Laravel
+## Requirements
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Install PHP 8.2+, Composer, Node.js/npm, MySQL, and Git.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Installation
 
-## Laravel Sponsors
+### 1. Clone the repository
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/HaRiGovinD-PS/task-management.git
+cd task-management
+```
 
-### Premium Partners
+### 2. Install backend dependencies
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+composer install
+```
 
-## Contributing
+### 3. Configure environment variables
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Copy `.env.example` to `.env`.
 
-## Code of Conduct
+Windows PowerShell:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```powershell
+Copy-Item .env.example .env
+```
 
-## Security Vulnerabilities
+macOS/Linux:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cp .env.example .env
+```
 
-## License
+Update `.env` with your local settings. For example:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```.env
+APP_NAME="Task Management"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://127.0.0.1:8000
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=task_management
+DB_USERNAME=root
+DB_PASSWORD=
+
+ADMIN_EMAIL=admin@gmail.com
+ADMIN_PASSWORD=admin@123
+```
+
+Create a MySQL database named `task_management` first. Change the database username and password to match your environment.
+
+### 4. Generate application and JWT secrets
+
+```bash
+php artisan key:generate
+php artisan jwt:secret
+```
+
+### 5. Run migrations
+
+```bash
+php artisan migrate
+```
+
+### 6. Create the admin account
+
+Configure `ADMIN_EMAIL` and `ADMIN_PASSWORD` in `.env`, then run:
+
+```bash
+php artisan db:seed --class=AdminUserSeeder
+```
+
+The seeder creates or updates the configured admin account.
+
+### 7. Run the frontend
+
+Open a second terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Vite normally serves the frontend at `http://localhost:5173`.
+
+### 8. Start Laravel
+
+From the project root, run:
+
+```bash
+php artisan serve
+```
+
+Laravel normally serves the backend at `http://127.0.0.1:8000`. Keep both development servers running.
+
+## Login
+
+Open the frontend URL printed by Vite and sign in with the admin email and password configured in `.env`. Public registration creates regular `user` accounts; use the seeder to create the admin.
+
+## API Endpoints
+
+| Method | Endpoint | Description | Authentication |
+|---|---|---|---|
+| `POST` | `/register` | Register a user | Public |
+| `POST` | `/login` | Log in and receive a JWT | Public |
+| `GET` | `/me` | Get the authenticated user | Required |
+| `POST` | `/logout` | Invalidate the current JWT | Required |
+| `GET` | `/tasks` | List tasks; supports search, status filter, pagination | Required |
+| `POST` | `/tasks` | Create a task | Required |
+| `GET` | `/tasks/{id}` | View a task | Required |
+| `PUT/PATCH` | `/tasks/{id}` | Update a task | Required |
+| `DELETE` | `/tasks/{id}` | Delete a task | Required |
+| `GET` | `/users` | List users for task assignment | Admin only |
+
+Task list query parameters:
+- `search`: search task titles
+- `status`: `Pending`, `In Progress`, or `Completed`
+- `page`: page number
+
+Example: `GET /tasks?search=report&status=Pending&page=1`
+
+For protected endpoints, include the token returned by `/login`:
+
+```text
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+## Authorization Rules
+
+- Public registration creates a regular `user`.
+- Admins can list all tasks and assign tasks to any user.
+- Regular users can list and manage only their own tasks.
+- The `/users` endpoint is restricted to admins.
