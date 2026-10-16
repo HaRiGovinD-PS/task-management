@@ -41,26 +41,22 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
+    protected function casts(): array {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
-    public function tasks(): HasMany
-    {
+    public function tasks(): HasMany {
         return $this->hasMany(Task::class);
     }
 
-    public function getJWTIdentifier(): mixed
-    {
+    public function getJWTIdentifier(): mixed {
         return $this->getKey();
     }
 
-    public function getJWTCustomClaims(): array
-    {
+    public function getJWTCustomClaims(): array {
         return [];
     }
 }
